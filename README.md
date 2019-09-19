@@ -3,6 +3,7 @@ TCP file transfer program for devices that sharing same network
 
 #### usage for receive:
 ./tunnel --type=R
+
 with this commend device enters the listening state. with port 8080
 
 #### usage for trasmit:
