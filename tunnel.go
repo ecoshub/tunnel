@@ -4,7 +4,7 @@ import (
     "fmt"
     "flag"
     "net"
-    "quick/rw"
+    "github.com/eco9999/quick"
     "strconv"
     "io/ioutil"
     "strings"
@@ -18,7 +18,7 @@ var fileLoc = ""
 func main(){
 	flagtype := flag.String("type","R","R for recieve, T for transmit")
 	flagip := flag.String("ip","192.168.1.108","cominication device ip")
-	flagport := flag.String("port","20","cominication port")
+	flagport := flag.String("port","8080","cominication port")
 	flagfile := flag.String("file","/","file to transmit")
 	flag.Parse()
 
