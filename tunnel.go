@@ -16,7 +16,7 @@ var fileLoc = ""
 
 
 func main(){
-	flagtype := flag.String("type","R","R for recieve, T for transmit")
+	flagstatus := flag.String("status","R","R for recieve, T for transmit")
 	flagip := flag.String("ip","192.168.1.108","cominication device ip")
 	flagport := flag.String("port","8080","cominication port")
 	flagfile := flag.String("file","/","file to transmit")
@@ -56,16 +56,16 @@ func main(){
   }
     fileLoc = rw.PreProcess(file)
 
-    if *flagtype == "T" {
+    if *flagstatus == "T" || *flagstatus == "t" {
         if !rw.IsFileExist(fileLoc) || rw.IsDir(fileLoc){
             fmt.Println("File Does Not Exist")
             return
         }
     }
 
-    if *flagtype == "R" {
-    recieveFile()
-    }else if *flagtype == "T" {
+    if *flagstatus == "R" || *flagstatus == "r"{
+        recieveFile()
+    }else if *flagstatus == "T" || *flagstatus == "t" {
         transmitfile()
     }
 
