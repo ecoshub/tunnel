@@ -2,12 +2,12 @@
 TCP file transfer program for devices that sharing same network
 
 #### usage for receive:
-./tunnel --type=R
+./tunnel --type=r
 
 with this commend device enters the listening state. with port 8080
 
 #### usage for trasmit:
-./tunnel --type=T --ip=local_ip_of_receiver --port=same_port_with_receiveing_device --file=filelocaation
+./tunnel --type=t --ip=local_ip_of_receiver --port=same_port_with_receiveing_device --file=filelocaation
 
 with this command device transmits the file to the receiver receiving file save location is the Desktop/filename.file_extension
 if your receiving devices local IP is starts with 192.168.1 you can just use last 3 digits of it.
