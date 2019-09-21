@@ -4,7 +4,7 @@ import (
     "fmt"
     "flag"
     "net"
-    "github.com/eco9999/quick"
+    "github.com/eco9999/quick/rw"
     "strconv"
     "io/ioutil"
     "strings"
