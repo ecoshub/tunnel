@@ -4,10 +4,11 @@ import (
     "fmt"
     "flag"
     "net"
-    "github.com/eco9999/quick/rw"
     "strconv"
     "io/ioutil"
+    "os/user"
     "strings"
+    "os"
 )
 
 var mainIP = ""
@@ -54,10 +55,10 @@ func main(){
     if file[0] == ' ' {
         file = file[1:]
   }
-    fileLoc = rw.PreProcess(file)
+    fileLoc = PreProcess(file)
 
     if *flagstatus == "T" || *flagstatus == "t" {
-        if !rw.IsFileExist(fileLoc) || rw.IsDir(fileLoc){
+        if !IsFileExist(fileLoc) || IsDir(fileLoc){
             fmt.Println("File Does Not Exist")
             return
         }
@@ -93,8 +94,8 @@ func recieveFile(){
     namesize := msg[0]
     name := msg[1:namesize + 1]
     realmsg := msg[namesize + 1:]
-    dir := rw.GetDesktop() + rw.Sep() + string(name)
-    rw.OWrite(dir, realmsg)
+    dir := GetDesktop() + Sep() + string(name)
+    OWrite(dir, realmsg)
     fmt.Println("File Receive Sequence Successful")
     fmt.Println("Received File Saved Here:", dir)
 
@@ -104,7 +105,7 @@ func transmitfile(){
 
     name := dirToName(fileLoc)
     namesize := len([]byte(name))
-    file := rw.Read(fileLoc)
+    file := Read(fileLoc)
     msg := make([]byte,0, 1 + namesize + len(file))
     msg = append(msg, byte(namesize))
     msg = append(msg, []byte(name)...)
@@ -125,7 +126,87 @@ func connect(protocol, ip, port string) net.Conn {
 }
 
 func dirToName(dir string) string{
-    tokens := strings.Split(dir, rw.Sep())
+    tokens := strings.Split(dir, Sep())
     name := tokens[len(tokens) - 1]
     return name
+}
+
+func PreProcess(dir string) string {
+    if strings.HasPrefix(strings.ToLower(dir), "desk") {
+        dir = strings.Replace(dir , "desk", GetDesktop(), -1)
+    }else if strings.HasPrefix(strings.ToLower(dir), "curr"){
+        dir = strings.Replace(dir , "curr", GetCurrentDir(), -1)
+    }
+    return dir
+}
+
+func IsDir(dir string) bool{
+    fi, err := os.Stat(dir)
+    if err != nil {
+        return false
+    }
+    if fi.Mode().IsDir() {
+        return true
+    }
+    return false
+}
+
+func IsFileExist(file string) bool {
+    if _, err := os.Stat(file); os.IsNotExist(err){
+        return false
+    }
+    return true
+}
+
+func GetDesktop() string{
+    myself, _ := user.Current()
+    var deskdir string = myself.HomeDir
+    deskdir = deskdir + Sep() + "Desktop"
+    return deskdir
+}
+
+func GetCurrentDir() string {
+    wd, _ := os.Getwd()
+    return wd
+}
+
+func Sep() string{
+    return string(os.PathSeparator)
+}
+
+func Read(dir string) []byte{
+    _, filedir := SplitDir(dir)
+    buff, err := ioutil.ReadFile(filedir)
+    if err != nil {
+        fmt.Printf("Read File Error:%v\n", err)
+    }else{
+        return buff
+    }
+    return []byte{}
+}
+
+func SplitDir(dir string) (string, string){
+    dir = PreProcess(dir)
+    sp := Sep()
+    tokens := strings.Split(dir, sp)
+    dirPart := strings.Join(tokens[:len(tokens) - 1], sp)
+    return dirPart, dir
+}
+
+func OWrite(dir string, buff []byte){
+    newdir, newfile := SplitDir(dir)
+    err := os.MkdirAll(newdir, os.ModePerm)
+    if err != nil {
+        fmt.Println("Make Directory Error:", err)
+    }else{
+        writeFile(newfile, buff)
+    }
+}
+
+// main write function
+func writeFile(filedir string, buffer []byte) {
+    err := ioutil.WriteFile(filedir, buffer, os.ModePerm)   
+    if err != nil {
+        fmt.Printf("File Write Error:%v\n", err)
+    }
 }
