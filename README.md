@@ -1,15 +1,27 @@
 # tunnel
 TCP file transfer program for devices that sharing same network
 
+#### build with "go bild tunnel.go" and you are good to go. 
 #### usage for receive:
-./tunnel --status=r
+##### linux/mac:
+./tunnel --state=r
+##### windows:
+tunnel --state=r
 
 with this commend device enters the listening state. with port 8080
 
-#### usage for trasmit:
-./tunnel --status=t --ip=local_ip_of_receiver --port=same_port_with_receiveing_device --file=filelocaation
+you can set an arbitrary port number just add --port=your_port_number to the command line.
 
-with this command device transmits the file to the receiver receiving file save location is the Desktop/filename.file_extension
+the port numbers that below 1024 can ask root permission.
+
+#### usage for trasmit:
+##### linux/mac:
+./tunnel --state=t --ip=local_ip_of_receiver --port=same_port_with_receiveing_device --file=filelocaation
+##### windows:
+tunnel --state=t --ip=local_ip_of_receiver --port=same_port_with_receiveing_device --file=filelocaation
+
+with this command device transmits the file to the receiver, save location is the Desktop/filename.file_extension
+
 if your receiving devices local IP is starts with 192.168.1 you can just use last 3 digits of it.
 
 sample use:
