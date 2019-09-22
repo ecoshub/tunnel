@@ -1,7 +1,8 @@
 # tunnel
 TCP file transfer program for devices that sharing same network
 
-#### build with "go bild tunnel.go" and you are good to go. 
+### build with "go build tunnel.go" and you are good to go. 
+
 #### usage for receive:
 ##### linux/mac:
 ./tunnel --state=r
