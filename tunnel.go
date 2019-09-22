@@ -9,6 +9,8 @@ import (
     "os/user"
     "strings"
     "os"
+    "time"
+    "unsafe"
 )
 
 var mainIP = ""
@@ -85,29 +87,46 @@ func recieveFile(){
     if err != nil {
         fmt.Println("Listen Accept Error")
         panic(err)
+    }else{
+        fmt.Println("Connected.")
     }
+    start := time.Now()
     msg, err :=  ioutil.ReadAll(conn)
     if err != nil {
         fmt.Println("Message Read Error")
         panic(err)
     }
+    end := time.Now()
+    fmt.Printf("File Trasfer Done in %v seconds\n", end.Sub(start))
+    fmt.Println("File Creating.")
     namesize := msg[0]
-    name := msg[1:namesize + 1]
+    checkSum := ByteArrayToInt(msg[1:8 + 1])
+    name := msg[8 + 1:namesize + 1]
     realmsg := msg[namesize + 1:]
-    dir := GetDesktop() + Sep() + string(name)
-    OWrite(dir, realmsg)
-    fmt.Println("File Receive Sequence Successful")
-    fmt.Println("Received File Saved Here:", dir)
+    msgSize := len(msg)
+    if msgSize == checkSum {
+        start = time.Now()
+        dir := GetDesktop() + Sep() + string(name)
+        OWrite(dir, realmsg)
+        end = time.Now()
+        fmt.Printf("File Creation Done in %v seconds\n", end.Sub(start))
+        fmt.Println("File Receive Sequence Successful")
+        fmt.Println("File Saved Here:", dir)
+    }else{
+        fmt.Printf("%v bytes expected but %v bytes has receive.\n", checkSum, msgSize)
+        fmt.Println("File Receive Sequence Faild!")
+    }
 
 }
 
 func transmitfile(){
-
     name := dirToName(fileLoc)
     namesize := len([]byte(name))
     file := Read(fileLoc)
-    msg := make([]byte,0, 1 + namesize + len(file))
+    checkSum := 1 + 8 + namesize + len(file)
+    msg := make([]byte,0, checkSum)
     msg = append(msg, byte(namesize))
+    msg = append(msg, IntToByteArray(checkSum)...)
     msg = append(msg, []byte(name)...)
     msg = append(msg, file...)
     conn := connect("tcp",mainIP, mainPort)
@@ -209,4 +228,23 @@ func writeFile(filedir string, buffer []byte) {
     if err != nil {
         fmt.Printf("File Write Error:%v\n", err)
     }
+}
+
+func IntToByteArray(num int) []byte {
+    size := int(unsafe.Sizeof(num))
+    arr := make([]byte, size)
+    for i := 0 ; i < size ; i++ {
+        byt := *(*uint8)(unsafe.Pointer(uintptr(unsafe.Pointer(&num)) + uintptr(i)))
+        arr[i] = byt
+    }
+    return arr
+}
+
+func ByteArrayToInt(arr []byte) int{
+    val := 0
+    size := len(arr)
+    for i := 0 ; i < size ; i++ {
+        *(*uint8)(unsafe.Pointer(uintptr(unsafe.Pointer(&val)) + uintptr(i))) = arr[i]
+    }
+    return val
 }
