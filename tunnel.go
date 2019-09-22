@@ -97,14 +97,14 @@ func recieveFile(){
         panic(err)
     }
     end := time.Now()
-    fmt.Printf("File Trasfer Done in %v seconds\n", end.Sub(start))
-    fmt.Println("File Creating.")
+    fmt.Printf("File Trasfer Ended in %v seconds\n", end.Sub(start))
     namesize := msg[0]
     checkSum := ByteArrayToInt(msg[1:8 + 1])
     name := msg[8 + 1:namesize + 1]
     realmsg := msg[namesize + 1:]
     msgSize := len(msg)
     if msgSize == checkSum {
+        fmt.Println("File Creating.")
         start = time.Now()
         dir := GetDesktop() + Sep() + string(name)
         OWrite(dir, realmsg)
