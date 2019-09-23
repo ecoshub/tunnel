@@ -97,7 +97,7 @@ func recieveFile(){
         panic(err)
     }
     end := time.Now()
-    fmt.Printf("File Trasfer Ended in %v seconds\n", end.Sub(start))
+    fmt.Printf("File Trasfer Ended in %v\n", end.Sub(start))
     namesize := msg[0]
     checkSum := ByteArrayToInt(msg[1:4 + 1])
     name := msg[4 + 1:namesize + 4 + 1]
@@ -109,7 +109,7 @@ func recieveFile(){
         dir := GetDesktop() + Sep() + string(name)
         OWrite(dir, realmsg)
         end = time.Now()
-        fmt.Printf("File Creation Done in %v seconds\n", end.Sub(start))
+        fmt.Printf("File Creation Done in %v\n", end.Sub(start))
         fmt.Println("File Receive Sequence Successful")
         fmt.Println("File Saved Here:", dir)
     }else{
@@ -131,9 +131,12 @@ func transmitfile(){
     msg = append(msg, []byte(name)...)
     msg = append(msg, file...)
     conn := connect("tcp",mainIP, mainPort)
+    fmt.Println("Connected")
+    start := time.Now()
     conn.Write(msg)
     conn.Close()
-    fmt.Println("File Trasmission Sequence successful")
+    end := time.Now()
+    fmt.Printf("File Trasmission Sequence ended in %v\n", end.Sub(start))
 }
 
 func connect(protocol, ip, port string) net.Conn {
