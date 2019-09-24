@@ -25,7 +25,7 @@ func main(){
 	flagfile := flag.String("file","/","file to transmit")
 	flag.Parse()
 
-    if len(*flagip) == 3 {
+    if len(*flagip) > 0 &&  len(*flagip) < 4 {
         mainIP = "192.168.1." + *flagip
     }else{
         mainIP = *flagip
