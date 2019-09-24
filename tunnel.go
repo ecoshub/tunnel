@@ -123,7 +123,6 @@ func transmitfile(){
     name := dirToName(fileLoc)
     namesize := len([]byte(name))
     file := Read(fileLoc)
-    // checkSum := 1 + namesize + len(file)
     checkSum := 1 + 4 + namesize + len(file)
     msg := make([]byte,0, checkSum)
     msg = append(msg, byte(namesize))

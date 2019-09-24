@@ -13,7 +13,7 @@ with this commend device enters the listening state. with port 8080
 
 you can set an arbitrary port number just add --port=your_port_number to the command line. like this:
 
-./tunnel --state=r --port:2020
+./tunnel --state=r --port=2020
 
 the port numbers that below 1024 can ask root permission.
 
