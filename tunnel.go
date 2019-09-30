@@ -61,7 +61,7 @@ func main(){
     if *flagdest == "/" {
         destLoc = GetDesktop()
     }else{
-        destLoc = *flagport
+        destLoc = *flagdest
     }
 
     fileLoc = PreProcess(file)
@@ -112,12 +112,12 @@ func recieveFile(){
     fmt.Println(namesize)
     name := msg[1:1 + namesize]
     fmt.Println(string(name))
-    destsize := msg[1 + namesize + 1]
+    destsize := msg[1 + namesize]
     fmt.Println(destsize)
-    dest := msg[1 + namesize + 1 + 1:1 + namesize + 1 + 1 + destsize]
+    dest := msg[1 + namesize + 1:1 + namesize + 1 + destsize]
     fmt.Println(string(dest))
-    checkSum := ByteArrayToInt(msg[1 + namesize + 1 + 1 + destsize:1 + namesize + 1 + 1 + destsize + 4])
-    realmsg := msg[1 + namesize + 1 + 1 + destsize + 4:]
+    checkSum := ByteArrayToInt(msg[1 + namesize + 1 + destsize:1 + namesize + 1 + destsize + 4])
+    realmsg := msg[1 + namesize + 1 + destsize + 4:]
     msgSize := len(msg)
 
     if msgSize == checkSum {
@@ -142,7 +142,7 @@ func transmitfile(){
     dest := destLoc
     destsize := len(destLoc)
     file := Read(fileLoc)
-    checkSum := 1 + 4 + namesize + len(file)
+    checkSum := 1 + 4 + namesize + len(file) + 1 + destsize
     msg := make([]byte,0, checkSum)
 
     msg = append(msg, byte(namesize))
