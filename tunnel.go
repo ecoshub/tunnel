@@ -60,6 +60,8 @@ func main(){
 
     if *flagdest == "/" {
         destLoc = GetDesktop()
+    }else{
+        destLoc = *flagport
     }
 
     fileLoc = PreProcess(file)
@@ -105,15 +107,23 @@ func recieveFile(){
     }
     end := time.Now()
     fmt.Printf("File Trasfer Ended in %v\n", end.Sub(start))
+
     namesize := msg[0]
-    checkSum := ByteArrayToInt(msg[1:4 + 1])
-    name := msg[4 + 1:namesize + 4 + 1]
-    realmsg := msg[namesize + 4 + 1:]
+    fmt.Println(namesize)
+    name := msg[1:1 + namesize]
+    fmt.Println(string(name))
+    destsize := msg[1 + namesize + 1]
+    fmt.Println(destsize)
+    dest := msg[1 + namesize + 1 + 1:1 + namesize + 1 + 1 + destsize]
+    fmt.Println(string(dest))
+    checkSum := ByteArrayToInt(msg[1 + namesize + 1 + 1 + destsize:1 + namesize + 1 + 1 + destsize + 4])
+    realmsg := msg[1 + namesize + 1 + 1 + destsize + 4:]
     msgSize := len(msg)
+
     if msgSize == checkSum {
         fmt.Println("File Creating.")
         start = time.Now()
-        dir := destLoc + Sep() + string(name)
+        dir := string(dest) + Sep() + string(name)
         OWrite(dir, realmsg)
         end = time.Now()
         fmt.Printf("File Creation Done in %v\n", end.Sub(start))
@@ -129,13 +139,19 @@ func recieveFile(){
 func transmitfile(){
     name := dirToName(fileLoc)
     namesize := len([]byte(name))
+    dest := destLoc
+    destsize := len(destLoc)
     file := Read(fileLoc)
     checkSum := 1 + 4 + namesize + len(file)
     msg := make([]byte,0, checkSum)
+
     msg = append(msg, byte(namesize))
-    msg = append(msg, IntToByteArray(checkSum, 4)...)
     msg = append(msg, []byte(name)...)
+    msg = append(msg, byte(destsize))
+    msg = append(msg, []byte(dest)...)
+    msg = append(msg, IntToByteArray(checkSum, 4)...)
     msg = append(msg, file...)
+    
     conn := connect("tcp",mainIP, mainPort)
     fmt.Println("Connected")
     start := time.Now()
