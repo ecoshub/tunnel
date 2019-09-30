@@ -58,9 +58,8 @@ func main(){
         file = file[1:]
     }
 
+    destLoc = *flagdest
     fileLoc = PreProcess(file)
-
-
 
     if *flagstate == "T" || *flagstate == "t" {
         if !IsFileExist(fileLoc) || IsDir(fileLoc){
@@ -109,7 +108,7 @@ func recieveFile(){
     checkSum := ByteArrayToInt(msg[1 + namesize + 1 + destsize:1 + namesize + 1 + destsize + 4])
     realmsg := msg[1 + namesize + 1 + destsize + 4:]
     msgSize := len(msg)
-    if string(dest) = "/" {
+    if string(dest) == "/" {
         destLoc = GetDesktop()
     }
 
@@ -132,7 +131,6 @@ func recieveFile(){
 func transmitfile(){
     name := dirToName(fileLoc)
     namesize := len([]byte(name))
-    dest := destLoc
     destsize := len(destLoc)
     file := Read(fileLoc)
     checkSum := 1 + 4 + namesize + len(file) + 1 + destsize
@@ -141,7 +139,7 @@ func transmitfile(){
     msg = append(msg, byte(namesize))
     msg = append(msg, []byte(name)...)
     msg = append(msg, byte(destsize))
-    msg = append(msg, []byte(dest)...)
+    msg = append(msg, []byte(destLoc)...)
     msg = append(msg, IntToByteArray(checkSum, 4)...)
     msg = append(msg, file...)
     
