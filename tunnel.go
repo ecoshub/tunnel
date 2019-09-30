@@ -13,9 +13,10 @@ import (
     "unsafe"
 )
 
-var mainIP = ""
-var mainPort = ""
-var fileLoc = ""
+var mainIP string = ""
+var mainPort string = ""
+var fileLoc string = ""
+var destLoc string = ""
 
 
 func main(){
@@ -23,6 +24,7 @@ func main(){
 	flagip := flag.String("ip","192.168.1.108","cominication device ip")
 	flagport := flag.String("port","8080","cominication port")
 	flagfile := flag.String("file","/","file to transmit")
+    flagdest := flag.String("dest","/","destination directory")
 	flag.Parse()
 
     if len(*flagip) > 0 &&  len(*flagip) < 4 {
@@ -32,8 +34,6 @@ func main(){
     }
     addr, err := net.ResolveIPAddr("ip", mainIP)
     if err != nil {
-
-
         fmt.Println("IP Resolving Error:", err)
         return
     }
@@ -56,8 +56,15 @@ func main(){
     file := *flagfile
     if file[0] == ' ' {
         file = file[1:]
-  }
+    }
+
+    if *flagdest == "/" {
+        destLoc = GetDesktop()
+    }
+
     fileLoc = PreProcess(file)
+
+
 
     if *flagstate == "T" || *flagstate == "t" {
         if !IsFileExist(fileLoc) || IsDir(fileLoc){
@@ -106,7 +113,7 @@ func recieveFile(){
     if msgSize == checkSum {
         fmt.Println("File Creating.")
         start = time.Now()
-        dir := GetDesktop() + Sep() + string(name)
+        dir := destLoc + Sep() + string(name)
         OWrite(dir, realmsg)
         end = time.Now()
         fmt.Printf("File Creation Done in %v\n", end.Sub(start))
