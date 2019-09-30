@@ -58,12 +58,6 @@ func main(){
         file = file[1:]
     }
 
-    if *flagdest == "/" {
-        destLoc = GetDesktop()
-    }else{
-        destLoc = *flagdest
-    }
-
     fileLoc = PreProcess(file)
 
 
@@ -115,6 +109,9 @@ func recieveFile(){
     checkSum := ByteArrayToInt(msg[1 + namesize + 1 + destsize:1 + namesize + 1 + destsize + 4])
     realmsg := msg[1 + namesize + 1 + destsize + 4:]
     msgSize := len(msg)
+    if string(dest) = "/" {
+        destLoc = GetDesktop()
+    }
 
     if msgSize == checkSum {
         fmt.Println("File Creating.")
