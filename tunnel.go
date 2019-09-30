@@ -109,13 +109,9 @@ func recieveFile(){
     fmt.Printf("File Trasfer Ended in %v\n", end.Sub(start))
 
     namesize := msg[0]
-    fmt.Println(namesize)
     name := msg[1:1 + namesize]
-    fmt.Println(string(name))
     destsize := msg[1 + namesize]
-    fmt.Println(destsize)
     dest := msg[1 + namesize + 1:1 + namesize + 1 + destsize]
-    fmt.Println(string(dest))
     checkSum := ByteArrayToInt(msg[1 + namesize + 1 + destsize:1 + namesize + 1 + destsize + 4])
     realmsg := msg[1 + namesize + 1 + destsize + 4:]
     msgSize := len(msg)
