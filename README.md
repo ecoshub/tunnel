@@ -7,7 +7,7 @@
 ### Receiver Side:
 ./tunnel --state=r
 ### Transmitter Side:
-./tunnel --state=t --ip=local_IP_of_receiver --port=same_port_with_receiveing_device --file=filelocaation
+./tunnel --state=t --ip=local_IP_of_receiver --port=same_port_with_receiveing_device --file=file_location
 
 *do not use './' prefix with windows. just a reminder.*
 
