@@ -108,6 +108,7 @@ func recieveFile(){
     checkSum := ByteArrayToInt(msg[1 + namesize + 1 + destsize:1 + namesize + 1 + destsize + 4])
     realmsg := msg[1 + namesize + 1 + destsize + 4:]
     msgSize := len(msg)
+    dest = PreProcess(dest)
     if string(dest) == "/" {
         destLoc = GetDesktop()
     }
