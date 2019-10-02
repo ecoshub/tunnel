@@ -108,15 +108,19 @@ func recieveFile(){
     checkSum := ByteArrayToInt(msg[1 + namesize + 1 + destsize:1 + namesize + 1 + destsize + 4])
     realmsg := msg[1 + namesize + 1 + destsize + 4:]
     msgSize := len(msg)
-    dest = PreProcess(dest)
-    if string(dest) == "/" {
-        destLoc = GetDesktop()
+    destStr := string(dest)
+    fmt.Println(destStr)
+    destStr = PreProcess(destStr)
+    fmt.Println(destStr)
+    if string(destStr) == "/" {
+        destStr = GetDesktop()
     }
+    fmt.Println(destStr)
 
     if msgSize == checkSum {
         fmt.Println("File Creating.")
         start = time.Now()
-        dir := string(dest) + Sep() + string(name)
+        dir := destStr + Sep() + string(name)
         OWrite(dir, realmsg)
         end = time.Now()
         fmt.Printf("File Creation Done in %v\n", end.Sub(start))
