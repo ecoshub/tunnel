@@ -109,13 +109,10 @@ func recieveFile(){
     realmsg := msg[1 + namesize + 1 + destsize + 4:]
     msgSize := len(msg)
     destStr := string(dest)
-    fmt.Println(destStr)
     destStr = PreProcess(destStr)
-    fmt.Println(destStr)
     if string(destStr) == "/" {
         destStr = GetDesktop()
     }
-    fmt.Println(destStr)
 
     if msgSize == checkSum {
         fmt.Println("File Creating.")
