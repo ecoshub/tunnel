@@ -7,7 +7,7 @@
 ### Receiver Side:
 ./tunnel --state=r
 ### Transmitter Side:
-./tunnel --state=t --ip=local_IP_of_receiver --port=same_port_with_receiveing_device --file=filelocaation
+./tunnel --state=t --ip=local_IP_of_receiver --port=same_port_with_receiveing_device --file=file_location
 
 *do not use './' prefix with windows. just a reminder.*
 
@@ -65,6 +65,6 @@ Sample use:
 ./tunnel --port=2020
 
 #### computer 2
-./tunnel --state=t --port=2020 --IP=104 --file=desk/tunnel.go --dest=desk/Downloads
+./tunnel --state=t --port=2020 --ip=104 --file=desk/tunnel.go --dest=desk/Downloads
 
 **This procedure sends the 'tunnel.go' file from computer 2 to computer 1. Creates nessesary directories ( /home/comp1/Desktop/Downloads ) and save 'tunnel.go' filr in it.
