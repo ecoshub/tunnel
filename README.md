@@ -67,4 +67,4 @@ Sample use:
 #### computer 2
 ./tunnel --state=t --port=2020 --ip=104 --file=desk/tunnel.go --dest=desk/Downloads
 
-**This procedure sends the 'tunnel.go' file from computer 2 to computer 1. Creates nessesary directories ( /home/comp1/Desktop/Downloads ) and save 'tunnel.go' filr in it.
+**This command sends the '/home/comp2/Desktop/tunnel.go' file from computer 2 to computer 1. Creates nessesary directories ( "/home/comp1/Desktop/Downloads", if its not exist) and save 'tunnel.go' file in it.
