@@ -5,9 +5,9 @@
 
 ## Simple usage:
 ### Receiver Side:
-./tunnel --state=r
+./tunnel
 ### Transmitter Side:
-./tunnel --state=t --ip=local_IP_of_receiver --port=same_port_with_receiveing_device --file=file_location
+./tunnel --state=t --ip=local_IP_of_receiver --file=file_location
 
 *do not use './' prefix with windows. just a reminder.*
 
@@ -25,7 +25,7 @@ the port numbers that below 1024 can ask root permission.
 
 * **--ip** : IP flag is only nessesary for transmitter side. It is local IP of receiver side. if your receiving device local IP is starts with 192.168.1 you can just write last byte.
 
-**sample use:**
+**example :**
 
 **--ip=108**
 

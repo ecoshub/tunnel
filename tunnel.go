@@ -20,12 +20,12 @@ var destLoc string = ""
 
 
 func main(){
-	flagstate := flag.String("state","R","R for recieve, T for transmit")
-	flagip := flag.String("ip","192.168.1.108","cominication device ip")
-	flagport := flag.String("port","8080","cominication port")
-	flagfile := flag.String("file","/","file to transmit")
+    flagstate := flag.String("state","R","R for recieve, T for transmit")
+    flagip := flag.String("ip","192.168.1.108","cominication device ip")
+    flagport := flag.String("port","8080","cominication port")
+    flagfile := flag.String("file","/","file to transmit")
     flagdest := flag.String("dest","/","destination directory")
-	flag.Parse()
+    flag.Parse()
 
     if len(*flagip) > 0 &&  len(*flagip) < 4 {
         mainIP = "192.168.1." + *flagip
