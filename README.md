@@ -1,70 +1,39 @@
 # Tunnel
-#### File transfer program for devices that sharing same network (TCP/IP)
-#### Windows/Linux/Mac compatible.
-#### Build with "go build tunnel.go" and you are good to go. 
+Local network file transfer program (TCP/IP). Windows/Linux/Mac support.
 
-## Simple usage:
-### Receiver Side:
-./tunnel
-### Transmitter Side:
-./tunnel --state=t --ip=local_IP_of_receiver --file=file_location
+## How to Build
+    go build .
 
-*do not use './' prefix with windows. just a reminder.*
+## How to Use
+Receiver side
+```bash
+    # run tunnel without flags
+    ./tunnel
+```
 
-**There is another sample usage on the bottom of this page**
+Transmitter side
+```bash
+    ./tunnel --state <t|r> --ip <IP_of_receiver> --file <file_path> --dest <file_destination_dir>
+```
 
-## Other functionalities
+## Flags
 
-* **--state** : Defines computers comminication state. Default device state is "r" for receive. if you want to send a file your state must be "t" for trasmit.
+-   **--state:** Defines transfer state it can be `receiver` or `transmitter`. Default state is `r` for receive. if you want to send a file your state must be transmitter adn use state `t`.
 
-* **--port** : Device comminication port. Default port number is 8080 but you can set an arbitrary port number like this,
+-   **--port:** Communication port. Default port number is 8080 but you can set an arbitrary port number like this.
+-    **--ip:** IP flag is only required for transmitter side. It is local IP of receiver side. if your receiving device local IP is starts with 192.168.1 you can just write last octet.
+-   **--dest:** Destination Directory for received file.
 
-**./tunnel --state=r --port=2020**
+example:
+```bash
+    # receiver ip: 192.168.1.104
+    # file path: /home/eco/Desktop/hello.txt
+    # dest. dir: /home/sbl/Downloads
+    # port: 2020
+    
+    # receiver
+    ./tunnel --port "2020"
 
-the port numbers that below 1024 can ask root permission.
-
-* **--ip** : IP flag is only nessesary for transmitter side. It is local IP of receiver side. if your receiving device local IP is starts with 192.168.1 you can just write last byte.
-
-**example :**
-
-**--ip=108**
-
-**is equal to**
-
-**--ip=192.168.1.108**
-
-* **--file** : File directoy of the file that you want to send.
-
-desk or curr prefix can be used to describe other directories quickly.
-
-Sample use:
-
-*/home/you/Desktop/hello.txt*                  -> **desk/hello.txt**
-
-*/home/you/where_tunnel_running/otherfile.go*  -> **curr/otherfile.go**
-
-* **--dest** : Destination directory. Default is desktop. This flag is sets the destination directory of the file that you want to send.
-
-
-## Sample Usage:
-
-### computer 1 
-* IP = 192.168.1.104
-* receiver side
-
-### computer 2
-* IP = 192.168.1.101
-* transmitter side
-
-**objective: send a file from computer 2 to computer 1**
-**file directory is '/home/comp2/Desktop/tunnel.go'**
-**port is 2020** *arbitrary port number* *optional, just for example*
-**destination directory is /home/comp1/Desktop/Downloads** *optional, just for example*
-
-#### computer 1:
-./tunnel --port=2020
-
-#### computer 2
-./tunnel --state=t --port=2020 --ip=104 --file=desk/tunnel.go --dest=desk/Downloads
-
-**This command sends the '/home/comp2/Desktop/tunnel.go' file from computer 2 to computer 1. Creates nessesary directories ( "/home/comp1/Desktop/Downloads", if its not exist) and save 'tunnel.go' file in it.
+    # transmitter
+    ./tunnel --state "t" --port "2020" --ip "104" --file "desk/hello.txt" --dest "/home/sbl/Downloads"
+```
